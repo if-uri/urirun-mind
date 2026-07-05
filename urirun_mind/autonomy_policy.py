@@ -25,6 +25,7 @@ _MIN_LEVEL = {
     "local_artifact_create": 2, "connector_smoke": 2, "read_only": 2,
     "connector_generate": 3, "connector_install": 3, "fleet_reconcile_safe": 3,
     "node_restart": 3, "registry_rebuild": 3,
+    "mailbox_mutate": 4,   # move-to-Junk etc. — reversible mailbox write, auto at L4
     "draft_message": 4, "draft_order": 4, "repo_publish_public": 4,
 }
 # always require explicit human approval regardless of level
@@ -38,6 +39,7 @@ _VERB_CLASS = [
     ("credential", "credential_export"), ("/command/delete", "file.delete"),
     ("/command/pay", "payment.confirm"), ("/command/publish", "post.publish"),
     ("/command/send", "message.send"), ("/order/command", "fiverr.order"),
+    ("/command/move", "mailbox_mutate"),
     ("connector/command/generate", "connector_generate"),
     ("connector/command/install", "connector_install"),
     ("runtime/command/restart", "node_restart"), ("registry/command/rebuild", "registry_rebuild"),
