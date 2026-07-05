@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "urirun-mind"
+version = "0.1.0"
+description = "Cognitive layer over connectors: episode memory, skill cards, antipatterns, capability graph, autonomy levels, strategy selection, reflection. Learn procedures not answers."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Tom Sapletta" }]
+dependencies = []
+[project.scripts]
+urirun-mind = "urirun_mind.cli:main"
+[tool.setuptools.packages.find]
+include = ["urirun_mind*"]
