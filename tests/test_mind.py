@@ -103,3 +103,12 @@ def test_reflection_records_antipattern_and_connector_ticket():
            "flow": [{"uri": "youtube://host/video/query/transcript"}]}
     out = reflection.evaluate(run)
     assert out["antipattern_recorded"] and any("youtube" in t["title"] for t in out["tickets"])
+
+
+def test_reflection_silent_failure_lesson_is_honest():
+    out = reflection.evaluate({"intent":"office.document.create","strategy":"host_fallback",
+      "result":"ok","postcondition_ok":False,"flow":[{"uri":"fs://host/file/command/write"}]})
+    assert out["silent_failure_detected"] and not out["goal_achieved"]
+    assert "FAILED" in out["lesson"] and "works" not in out["lesson"]   # never claims it works
+    assert out["new_skill_candidate"] is None                           # no skill on silent failure
+    assert out["what_worked"] == []                                     # nothing 'worked'

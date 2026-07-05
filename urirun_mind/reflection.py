@@ -63,17 +63,21 @@ def evaluate(run: dict) -> dict[str, Any]:
 
 def _derive_lesson(run: dict) -> str:
     intent = run.get("intent", "task")
+    # a claimed-ok run whose postcondition failed is a SILENT FAILURE — never call it "works"
+    if run.get("result") == "ok" and run.get("postcondition_ok") is False:
+        return (f"For {intent}, strategy '{run.get('strategy')}' reported ok but the postcondition "
+                f"({run.get('failure_class', 'unmet')}) FAILED — treat as not done; harden the check.")
     if run.get("result") != "ok" and run.get("working_fallback"):
         return (f"For {intent}, when strategy '{run.get('strategy')}' fails "
                 f"({run.get('failure_class', 'blocked')}), prefer '{run.get('working_fallback')}' first.")
-    if run.get("result") == "ok":
+    if run.get("result") == "ok" and run.get("postcondition_ok") is not False:
         return f"For {intent}, strategy '{run.get('strategy')}' works in this environment."
     return f"{intent}: {run.get('failure_class', 'unresolved')}."
 
 
 def _worked(run: dict) -> list[str]:
     w = []
-    if run.get("result") == "ok":
+    if run.get("result") == "ok" and run.get("postcondition_ok") is not False:  # not on silent failure
         w.append(run.get("strategy") or "chosen strategy")
     if run.get("working_fallback"):
         w.append(run["working_fallback"])
