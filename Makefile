@@ -1,11 +1,18 @@
-.PHONY: install test check clean
+.PHONY: install test doctor-test doctor-health check clean
+
+PY ?= python
 
 install:
 	pip install -e .
 	pip install pytest
 
-test:
-	python -m pytest tests -v
+doctor-test:
+	$(PY) -m pytest tests -v
+
+doctor-health:
+	$(PY) -c "import urirun_mind"
+
+test: doctor-test
 
 check: test
 
