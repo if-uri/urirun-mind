@@ -40,7 +40,6 @@ workflows/
 !/.github/workflows/*.yml
 !/.github/workflows/*.yaml
 output/
-.env.example
 __pycache__/
 *.py[codz]
 *$py.class
